@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record id="my_custom_partner_view" model="ir.ui.view">
+            <field name="name">my.custom.partner.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>  <!-- Inherit base partner form view -->
+            <field name="arch" type="xml">
+                <!-- Add a new tab: Sales and Purchases -->
+                <xpath expr="//notebook" position="inside">
+                    <page name="sales_purchases" string="Sales and Purchases">
+                        <!-- Add a group inside the tab for related_patient_id -->
+                        <group name="misc" string="Misc">
+                            <field name="related_patient_id"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <!-- Add the 'website' field in the form view -->
+                <xpath expr="//sheet//group" position="inside">
+                    <field name="website"/>
+                </xpath>
+
+                <!-- Make the 'vat' field mandatory if the partner is a customer -->
+                <xpath expr="//field[@name='vat']" position="attributes">
+                    <attribute name="modifiers">
+                        {"required": true, "invisible": false}
+                    </attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

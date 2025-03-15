@@ -1,0 +1,62 @@
+<odoo>
+    <data>
+<!--        Tree View-->
+        <record id="students_tree_view" model="ir.ui.view">
+            <field name="name">Students Tree View</field>
+            <field name="model">iti.student</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="birth_date"/>
+                    <field name="salary"/>
+                </tree>
+            </field>
+        </record>
+
+<!--        Form View-->
+        <record id="students_form_view" model="ir.ui.view">
+            <field name="name">Students Form View</field>
+            <field name="model">iti.student</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                    <group string="Basic Info">
+                        <field name="salary"/>
+                        <field name="name"/>
+                        <field name="birth_date"/>
+                        <field name="gender"/>
+                        <field name="skills_ids" widget="many2many_tags"/>
+                    </group>
+                    <group string="ITI Info">
+                        <field name="accepted"/>
+                        <field name="level"/>
+                        <field name="image" widget="image"/>
+                        <field name="track_id"/>
+                        <field name="track_capacity"/>
+                    </group>
+                    </group>
+                    <notebook>
+                        <page string="CV">
+                            <field name="cv"/>
+                        </page>
+                        <page string="Address">
+                            <field name="address"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+
+
+<!--        menu action-->
+        <record id="students_action" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="res_model">iti.student</field>
+        </record>
+<!--        create menu-->
+        <menuitem id="iti_root" name="ITI"/>
+        <menuitem id="iti_students_menu" name="Students" parent="iti_root" action="students_action"/>
+
+    </data>
+</odoo>

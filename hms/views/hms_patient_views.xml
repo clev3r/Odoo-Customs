@@ -1,0 +1,65 @@
+<odoo>
+    <data>
+        <record id="patients_tree_view" model="ir.ui.view">
+            <field name="name">Patients Tree View</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="birth_date"/>
+                    <field name="age"/>
+                    <field name="blood_type"/>
+                    <field name="pcr"/>
+                    <field name="cr_ratio"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="patients_form_view" model="ir.ui.view">
+            <field name="name">Patients Form View</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="email"/>
+                        <field name="birth_date"/>
+                        <field name="age"/>
+                        <field name="blood_type"/>
+                        <field name="pcr"/>
+                        <field name="cr_ratio" required="pcr"/>
+                        <field name="patient_state"/>
+                        <field name="department_id" domain="[('is_open' ,'=', True)]"/>
+                        <field name="department_capacity"/>
+                        <field name="doctor_ids"
+                               widget="many2many_tags"
+                               readonly="not department_id"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Log History">
+                            <field name="log_history" invisible="age &lt; 50">
+                                <tree>
+                                    <field name="create_uid"/>
+                                    <field name="create_date"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="patients_action" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">hms.patient</field>
+        </record>
+
+        <menuitem id="hms_root" name="HMS"/>
+        <menuitem id="hms_patient_menu" name="Patients" parent="hms_root" action="patients_action"/>
+    </data>
+</odoo>

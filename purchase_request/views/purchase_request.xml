@@ -1,0 +1,70 @@
+<odoo>
+    <data>
+        <record id="purchase_request_tree_view" model="ir.ui.view">
+            <field name="name">Purchase Request Tree View</field>
+            <field name="model">purchase.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="request_by"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="rejection_reason"/>
+                    <field name="order_lines"/>
+                    <field name="total_price"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="purchase_request_form_view" model="ir.ui.view">
+            <field name="name">Purchase Request Form View</field>
+            <field name="model">purchase.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name" readonly="status in ['approved','rejected', 'cancelled']"/>
+                        <field name="request_by" readonly="status in ['approved','rejected', 'cancelled']"/>
+                        <field name="start_date" readonly="status in ['approved','rejected', 'cancelled']"/>
+                        <field name="end_date" readonly="status in ['approved','rejected', 'cancelled']"/>
+                        <field name="rejection_reason"
+                               readonly="status in ['approved','rejected', 'cancelled']"
+                               invisible="status in ['draft','to_approve', 'approved', 'cancelled']"/>
+                        <field name="order_lines" readonly="status in ['approved','rejected', 'cancelled']">
+                            <tree>
+                                <field name="product_id" widget="many2one"/>
+                                <field name="quantity"/>
+                                <field name="cost_price"/>
+                                <field name="total"/>
+                            </tree>
+
+                        </field>
+                        <field name="total_price" readonly="status in ['approved','rejected', 'cancelled', 'draft']"/>
+                        <field name="status"/>
+                    </group>
+                    <header>
+                        <button name="submit_to_approve" string="Submit for Approval" type="object"
+                                invisible="status != 'draft'"/>
+                        <button name="cancel_order" string="Cancel" type="object" invisible="status != 'draft'"/>
+                        <button name="approve_order" string="Approve" type="object" invisible="status != 'to_approve'"/>
+                        <button name="reject_order" string="Reject" type="object" invisible="status != 'to_approve'"/>
+                        <button name="reset_draft" string="Reset to draft" type="object"
+                                invisible="status != 'cancelled'"/>
+
+                        <field name="status" widget="statusbar"
+                               statusbar_visible="draft, to_approve, rejected, cancelled, approved"/>
+                    </header>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="purchase_request_actions" model="ir.actions.act_window">
+            <field name="name">Purchase Request</field>
+            <field name="res_model">purchase.request</field>
+        </record>
+
+        <menuitem id="purchase_request_menu" name="Purchase Request" action="purchase_request_actions"
+                  parent="purchase.menu_procurement_management"/>
+    </data>
+</odoo>
